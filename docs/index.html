@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@dekkai/event-emitter - v1.0.0</title>
-	<meta name="description" content="Documentation for @dekkai/event-emitter - v1.0.0">
+	<title>@dekkai/env - v1.0.0</title>
+	<meta name="description" content="Documentation for @dekkai/env - v1.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@dekkai/event-emitter - v1.0.0</a>
+					<a href="index.html" class="title">@dekkai/env - v1.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>@dekkai/event-emitter - v1.0.0</h1>
+			<h1>@dekkai/env - v1.0.0</h1>
 		</div>
 	</div>
 </header>
@@ -65,67 +65,53 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<div align="center">
-					<p><img src="https://raw.githubusercontent.com/dekkai-csv/assets/master/svg/dekkai_event-emitter_banner_light.svg" alt="@dekkai/event-emitter"><br><img src="https://github.com/dekkai-csv/env/workflows/browser/badge.svg" alt="browser">
-						<img src="https://github.com/dekkai-csv/env/workflows/node/badge.svg" alt="node">
-						<img src="https://github.com/dekkai-csv/env/workflows/deno/badge.svg" alt="deno">
+					<p><img src="https://raw.githubusercontent.com/dekkai-data/assets/master/svg/dekkai_env_banner_light.svg" alt="@dekkai/env"><br><img src="https://github.com/dekkai-data/env/workflows/browser/badge.svg" alt="browser">
+						<img src="https://github.com/dekkai-data/env/workflows/node/badge.svg" alt="node">
+						<img src="https://github.com/dekkai-data/env/workflows/deno/badge.svg" alt="deno">
 					<img src="https://img.shields.io/badge/badges_are-meaningless-blue" alt="opinion"></p>
 				</div>
 				<a href="#dekkaienv" id="dekkaienv" style="color: inherit; text-decoration: none;">
 					<h1>@dekkai/env</h1>
 				</a>
-				<p>Utility methods to detect runtimes and load modules dynamically at runtime.</p>
-				<p>Check out the full <a href="https://dekkai-csv.github.io/env/">API Documentation</a></p>
+				<p>Utility methods to detect runtimes and load modules dynamically.</p>
+				<p>Check out the full <a href="https://dekkai-data.github.io/env/">API Documentation</a></p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
 				<p><strong>Browser/NodeJS</strong></p>
-				<pre><code class="language-shell"><span class="hljs-meta">$</span><span class="bash"> yarn add @dekkai/event-emitter</span></code></pre>
+				<pre><code class="language-shell"><span class="hljs-meta">$</span><span class="bash"> yarn add @dekkai/env</span></code></pre>
 				<p><strong>Deno</strong></p>
 				<pre><code class="language-javascript"><span class="hljs-comment">// import from directly from a CDN, like unpkg.com</span>
-<span class="hljs-keyword">import</span> {EventEmitter} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;https://unpkg.com/@dekkai/event-emitter&#x27;</span>;</code></pre>
+<span class="hljs-keyword">import</span> {isDeno, isBrowser, isNodeJS, loadModule} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;https://unpkg.com/@dekkai/env&#x27;</span>;</code></pre>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-comment">// import EventEmitter</span>
-<span class="hljs-keyword">import</span> {EventEmitter} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@dekkai/event-emitter&#x27;</span>;
+				<pre><code class="language-javascript"><span class="hljs-comment">// import the desired methods</span>
+<span class="hljs-keyword">import</span> {isDeno, isBrowser, isNodeJS, loadModule} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@dekkai/env&#x27;</span>;
 
-<span class="hljs-comment">// can be extended</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyEmitter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">EventEmitter</span> </span>{
-    <span class="hljs-comment">// ...</span>
+<span class="hljs-comment">// test for deno</span>
+<span class="hljs-keyword">const</span> deno = isDeno();
+
+<span class="hljs-comment">// test for node</span>
+<span class="hljs-keyword">const</span> node = isNodeJS();
+
+<span class="hljs-comment">// test for browser</span>
+<span class="hljs-keyword">const</span> browser = isBrowser();
+
+<span class="hljs-comment">// import a module at runtime, this is generally the same as calling `await import(module)` but it is safe for all </span>
+<span class="hljs-comment">// platforms and should be able to survive bundlers, also wraps `require` for node environments where needed.</span>
+<span class="hljs-comment">// The main advantage is to import modules needed for a specific platform at runtime, think importing `fs` for node</span>
+<span class="hljs-comment">// at runtime but still being able to compile for all platforms.</span>
+<span class="hljs-keyword">let</span> fs;
+<span class="hljs-keyword">if</span> (node) {
+    fs = <span class="hljs-keyword">await</span> loadModule(<span class="hljs-string">&#x27;fs&#x27;</span>);
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (deno) {
+    fs = <span class="hljs-keyword">await</span> loadModule(<span class="hljs-string">&#x27;https://deno.land/std/fs/mod.ts&#x27;</span>);
+} <span class="hljs-keyword">else</span> {
+    fs = <span class="hljs-keyword">await</span> loadModule(<span class="hljs-string">&#x27;https://unpkg.com/browserfs&#x27;</span>);
 }
-
-<span class="hljs-comment">// instantiate the emitter</span>
-<span class="hljs-keyword">const</span> emitter = <span class="hljs-keyword">new</span> MyEmitter();
-
-<span class="hljs-comment">// create an event handler</span>
-<span class="hljs-keyword">const</span> handler = <span class="hljs-function">(<span class="hljs-params">evt, num0, num1</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Event [<span class="hljs-subst">${evt.toString()}</span>] result: <span class="hljs-subst">${num0 + num1}</span>`</span>);
-
-<span class="hljs-comment">// register the handler</span>
-emitter.on(<span class="hljs-string">&#x27;add&#x27;</span>, handler);
-
-<span class="hljs-comment">// events can also be symbols</span>
-<span class="hljs-keyword">const</span> symbolEvent = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">&#x27;add-symbol&#x27;</span>);
-emitter.on(symbolEvent, handler);
-
-<span class="hljs-comment">// emit events</span>
-emitter.emit(<span class="hljs-string">&#x27;add&#x27;</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>); <span class="hljs-comment">// Event [add] result: 10</span>
-emitter.emit(symbolEvent, <span class="hljs-number">12</span>, <span class="hljs-number">8</span>); <span class="hljs-comment">// Event [Symbol(add-symbol)] result: 20</span>
-
-<span class="hljs-comment">// remove previously added listeners</span>
-emitter.off(<span class="hljs-string">&#x27;add&#x27;</span>, handler);
-emitter.off(symbolEvent, handler);
-
-<span class="hljs-comment">// use omni-listeners to catch all events, register them using the `omniEvent` static property</span>
-<span class="hljs-keyword">const</span> omniHandler = <span class="hljs-function"><span class="hljs-params">evt</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(evt.toString());
-emitter.on(MyEmitter.omniEvent, omniHandler);
-
-<span class="hljs-comment">// the omni-listener will catch all events</span>
-emitter.emit(<span class="hljs-string">&#x27;hello&#x27;</span>); <span class="hljs-comment">// hello</span>
-emitter.emit(<span class="hljs-built_in">Symbol</span>(<span class="hljs-string">&#x27;random symbol&#x27;</span>)); <span class="hljs-comment">// Symbol(random symbol)</span>
-
-<span class="hljs-comment">// removing omni-listeners works the same way as with regular listeners, but using the `omniEvent`</span>
-emitter.off(MyEmitter.omniEvent, omniHandler);</code></pre>
-				<p>Check out the full <a href="https://dekkai-csv.github.io/workers/">API Documentation</a></p>
+<span class="hljs-comment">// ...</span></code></pre>
+				<p>Check out the full <a href="https://dekkai-data.github.io/env/">API Documentation</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
