@@ -12,9 +12,10 @@
         "src/"
     ],
     "keywords": [
-        "event-emitter",
-        "event",
-        "emitter",
+        "environment",
+        "detect",
+        "modules",
+        "runtime",
         "browser",
         "deno",
         "node"
