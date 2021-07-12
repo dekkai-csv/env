@@ -25,7 +25,7 @@ async function main() {
     }
 
     // Browser based Mocha requires `window.location` to exist.
-    window.location = new URL('http://localhost:0');
+    // window.location = new URL('http://localhost:0'); // handled through command line
 
     // create the environment
     const env = {

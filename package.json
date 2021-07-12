@@ -30,7 +30,7 @@
         "test": "run-s -c clean build test:**",
         "test:node": "mocha spec/env/node.suite.js",
         "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.cjs",
-        "test:deno": "deno run --allow-read --allow-net spec/env/deno.suite.js",
+        "test:deno": "deno run --allow-read --allow-net --location 'http://localhost:0' spec/env/deno.suite.js",
         "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
         "prepack": "run-s clean test lint",
         "pre-push": "run-p pre-push:**",
