@@ -6,7 +6,7 @@ import {isNodeJS} from './node';
  */
 function checkDynamicImport(): boolean {
     try {
-        import(`${null}`).catch(() => false);
+        import(/* webpackIgnore: true */ `${null}`).catch(() => false);
         return true;
     } catch {
         return false;
@@ -40,7 +40,7 @@ declare const __non_webpack_require__: any;
  */
 export async function loadModule(mod: string | URL): Promise<any> {
     if (kSupportsDynamicImport) {
-        return await import(mod.toString());
+        return await import(/* webpackIgnore: true */ mod.toString());
     } else if (isNodeJS()) {
         return typeof module !== 'undefined' && typeof module.require === 'function' && module.require(mod.toString()) ||
             // eslint-disable-next-line camelcase
